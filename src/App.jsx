@@ -1,5 +1,8 @@
 import { useState } from "react";
 import URLForm from "./components/URLForm";
+import AppNavigation from "./components/AppNavigation";
+import { Box } from "@mui/material";
+import Hero from "./components/Hero";
 
 function App() {
   const [value, setValue] = useState("");
@@ -7,8 +10,11 @@ function App() {
   const [error, setError] = useState("");
   return (
     <div>
-      <header></header>
+      <Box component="header" margin={0} padding={0} bgcolor="yellow">
+        <AppNavigation />
+      </Box>
       <main>
+        <Hero />
         <URLForm
           value={value}
           shortenedURL={shortenedURL}
