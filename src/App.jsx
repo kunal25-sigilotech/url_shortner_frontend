@@ -18,12 +18,18 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <div>
-        <Box component="header" margin={0} padding={0}>
-          <AppNavigation />
+        <Box
+          component="header"
+          margin={0}
+          padding={0}
+          sx={{ containerType: "inline-size" }}
+        >
+          <AppNavigation theme={theme} />
         </Box>
-        <main>
-          <Hero />
+        <main style={{ containerType: "inline-size" }}>
+          <Hero theme={theme} />
           <URLForm
+            theme={theme}
             value={value}
             shortenedURL={shortenedURL}
             error={error}

@@ -1,8 +1,11 @@
+import { Box, Button, Link, Stack, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 import { API_URL, API_URL_SHORT } from "../utils/endPoints";
 import { validator } from "../utils/urlValidator";
+import { purple, teal } from "@mui/material/colors";
 
 export default function URLForm({
+  theme,
   value,
   shortenedURL,
   error,
@@ -42,7 +45,9 @@ export default function URLForm({
       setClicks(data.clicks);
       setIsCopied(true);
       navigator.clipboard.writeText(data.url);
-    } catch {}
+    } catch {
+      onSetError("Failed to shorten the link");
+    }
   }
 
   if (error)
@@ -53,27 +58,91 @@ export default function URLForm({
     );
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          value={value}
-          onChange={(e) => onSetValue(e.target.value)}
-        />
-        <button type="submit">Shorten it!</button>
-      </form>
-      {shortenedURL ? (
-        <p
-          style={{ display: "flex", alignItems: "center", gap: "10px" }}
-          onClick={() => handleClick(shortenedURL.shortURL)}
+    <Stack
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
+      width="100%"
+      maxWidth="1280px"
+      marginInline="auto"
+      bgcolor="#f5f5f5"
+      mt="100px"
+      boxSizing="border-box"
+      px={4}
+    >
+      <Stack
+        width="100%"
+        spacing={2}
+        alignItems="center"
+        maxWidth="800px"
+        p={4}
+        bgcolor={purple[800]}
+        sx={{
+          transform: "translateY(-50%)",
+          borderRadius: "9px",
+        }}
+      >
+        <Box
+          component="form"
+          m={0}
+          p={0}
+          onSubmit={handleSubmit}
+          boxSizing="border-box"
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "20px",
+            alignSelf: "stretch",
+            [theme.containerQueries.down(834)]: {
+              flexDirection: "column",
+            },
+            [theme.containerQueries.up(834)]: {
+              flexDirection: "row",
+            },
+          }}
         >
-          <span style={{ cursor: "pointer" }}>{shortenedURL.shortURL}</span>
-          <span>clicks:{clicks}</span>
-          {isCopied ? <span>Copied!</span> : null}
-        </p>
-      ) : (
-        <p>Generate a new URL</p>
-      )}
-    </div>
+          <TextField
+            type="text"
+            size="small"
+            placeholder="Shorten a link here..."
+            sx={{ backgroundColor: "#fff", width: "100%", maxWidth: "650px" }}
+            value={value}
+            onChange={(e) => onSetValue(e.target.value)}
+          />
+          <Button
+            variant="contained"
+            disableElevation
+            sx={{
+              backgroundColor: `${teal["A400"]}`,
+              textTransform: "none",
+              fontFamily: "Poppins, Arial, sans-serif",
+              fontSize: "16px",
+              fontWeight: 600,
+            }}
+            type="submit"
+          >
+            Shorten it!
+          </Button>
+        </Box>
+        {shortenedURL ? (
+          <Typography
+            variant="subtitle2"
+            alignSelf="center"
+            component="p"
+            display="flex"
+            alignItems="center"
+            justifyContent="space-between"
+            gap="1rem"
+            color="#fff"
+            onClick={() => handleClick(shortenedURL.shortURL)}
+          >
+            <span style={{ cursor: "pointer" }}>{shortenedURL.shortURL}</span>
+            <span>clicks:{clicks}</span>
+            {isCopied ? <span>Copied!</span> : null}
+          </Typography>
+        ) : null}
+      </Stack>
+    </Stack>
   );
 }
